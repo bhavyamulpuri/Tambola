@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Game</title>
+<style>
+body {
+	background-color: coral;
+}
+
+table {
+	table-layout: fixed;
+	width: 330px;
+}
+
+button:disabled {
+	background: #F5F5F5;
+	color: blue;
+}
+</style>
+</head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<body>
+	<center>
+		<input type="button" id="myBtn" value="Click here to start the game"
+			this.onclick=null;>
+		<div>
+			<b>New-Number appears in <span id="time">00:05</span> Seconds!
+			</b>
+		</div>
+
+	</center>
+</body>
+
+
+<script>
+	var x = new Array();
+	$(document).ready(function() {
+		$("#myBtn").click(function() {
+			$.get("Game_Servlet", function(data) {
+				x = data.split('&');
+				tc = 0;
+				start();
+				startTime();
+				function startTime() {
+					var r1 = x[tc];
+					tc = tc + 1;
+					document.getElementById("a" + tc).innerHTML = r1;
+					call(r1);
+					if (tc < 90) {
+						setTimeout(startTime, 16000);
+					}
+				}
+			});
+		});
+	});
+
+	var random = new Array(91);
+	for (var i = 0; i < 91; i++) {
+		random[i] = 0;
+	}
+	function call(i) {
+		random[i] = 1;
+
+	}
+
+	function startTimer(duration, display) {
+		var timer = duration, minutes, seconds;
+		setInterval(function() {
+			minutes = parseInt(timer / 60, 10)
+			seconds = parseInt(timer % 60, 10);
+
+			minutes = minutes < 10 ? "0" + minutes : minutes;
+			seconds = seconds < 10 ? "0" + seconds : seconds;
+
+			display.textContent = minutes + ":" + seconds;
+
+			if (--timer < 0) {
+				timer = duration;
+			}
+		}, 1000);
+	}
+
+	function start() {
+		var fiveMinutes = 15, display = document.querySelector('#time');
+		startTimer(fiveMinutes, display);
+	}
+
+	var tc = 0;
+	document.write('<center><table border="1"><br><br><b><h2>BOARD</h2></b>');
+	for (var i = 0; i < 6; i++) {
+		document.write("<tr>");
+		for (var j = 0; j < 15; j++) {
+			tc++;
+			document
+					.write("<td style=width:31px;height:31px; id=a"+tc+"></td>");
+		}
+		document.write("</tr>");
+	}
+	var a = new Array(3);
+	for (var i = 0; i < 3; i++) {
+		a[i] = new Array(9);
+		for (var j = 0; j < 9; j++) {
+			a[i][j] = 0;
+		}
+	}
+	var b = new Array(91);
+	for (var i = 0; i < 91; i++) {
+		b[i] = 0;
+	}
+	var count = 0;
+	var row = 0;
+	var c = new Array(9);
+	for (var i = 0; i < 9; i++) {
+		c[i] = 0;
+	}
+
+	while (count < 15) {
+		var r = Math.floor((Math.random() * 90)) + 1;
+		if (r == 90)
+			r = r - 1;
+		var col = Math.floor(r / 10);
+		if (b[r] == 0 && a[row][col] == 0 && c[col] != 2) {
+			if (row != 2) {
+				a[row][col] = r;
+				b[r] = 1;
+				count = count + 1;
+				if (count % 5 == 0)
+					row = row + 1;
+			} else {
+				if (a[0][col] == 0 || a[1][col] == 0 && c[col] != 2) {
+					a[row][col] = r;
+					b[r] = 1;
+					count = count + 1;
+					if (count % 5 == 0)
+						row = row + 1;
+				}
+			}
+		}
+	}
+
+	document
+			.write('<br><br><center><table border="1"><br><br><b><h2>TICKET</h2></b>');
+	for (var i = 0; i < 3; i++) {
+
+		document.write("<tr>");
+		for (var j = 0; j < 9; j++) {
+			if (a[i][j] != 0) {
+				document.write("<td> <button style=width:31px;height:22px; id="
+						+ a[i][j] + " onclick=deactivate(this)>" + a[i][j]
+						+ "</button></td>");
+
+			} else {
+				document.write("<td> </td>");
+			}
+		}
+		document.write("</tr>");
+	}
+	document.write("</table><br>");
+	tc = 0;
+
+	var co = 0;
+	function deactivate(b) {
+		if (random[b.id] == 1) {
+			document.getElementById(b.id).disabled = true;
+
+			for (var i = 0; i < 3; i++) {
+				for (var j = 0; j < 9; j++) {
+					if (a[i][j] == b.id) {
+						c[i]++;
+					}
+				}
+			}
+			co++;
+		}
+	}
+
+	function Earlyfive() {
+		if (co >= 5) {
+			alert("early five");
+			document.getElementById("b1").disabled = true;
+		} else {
+			alert("wrong claim");
+			window.location.href = "homepage.html";
+		}
+	}
+	function Housy() {
+		//alert(co);
+		if (co == 15) {
+			alert("YOU WON");
+			document.getElementById("b5").disabled = true;
+			window.location.href = "GameOverPage.html";
+		} else {
+			alert("wrong claim");
+			window.location.href = "homepage.html";
+
+		}
+
+	}
+	function singlerow(i) {
+		if (c[i] == 5) {
+			alert((++i) + " row");
+			if (i == 1) {
+				document.getElementById("b2").disabled = true;
+			} else if (i == 2) {
+
+				document.getElementById("b3").disabled = true;
+			} else if (i == 3) {
+
+				document.getElementById("b4").disabled = true;
+			}
+		} else {
+			alert("wrong claim");
+			window.location.href = "homepage.html";
+		}
+	}
+</script>
+
+
+<button type="button" id="b1" onclick="Earlyfive()">Early five</button>
+<button type="button" id="b2" onclick="singlerow(0)">First Row</button>
+<button type="button" id="b3" onclick="singlerow(1)">Second
+	Row</button>
+<button type="button" id="b4" onclick="singlerow(2)">Third Row</button>
+<button type="button" id="b5" onclick="Housy()">Housy</button>
+</center>
+</form>
+
+</html>

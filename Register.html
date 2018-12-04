@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="reg_validation.js"></script>
+<meta charset="ISO-8859-1">
+<title>Registration page</title>
+<style>
+body {
+	background-image: url("TAMBOLA2.jpg");
+	background-repeat: no-repeat;
+	background-size: 1500px 750px;
+}
+
+.button {
+	background-color: red;
+	border: none;
+	color: white;
+	padding: 20px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+}
+
+h1 {
+	color: blue;
+}
+
+.button5 {
+	border-radius: 70%;
+}
+</style>
+</head>
+<body>
+	<center>
+		<br> <br> <br> <br> <br> <br> <br>
+		<br> <br>
+		<h1>WELCOME TO REGISTRATION PAGE</h1>
+		<form name="myform" action="Register_servlet"
+			onsubmit="return Firstnamevalidation()" method="post">
+			<h2>
+				<br> USERNAME&emsp;:&emsp;<input type="email" name="username"
+					required=""><br> <br> PASSWORD&emsp;:&emsp;<input
+					type="password" name="password" required=""><br> <br>
+				CONFIRM PASSWORD&emsp;:&emsp;<input type="password"
+					name="confirmpassword" required=""><br> <br> <input
+					type="submit" style="float: center" class="button button5"
+					value="Submit"> <br>
+
+			</h2>
+		</form>
+	</center>
+</body>
+</html>

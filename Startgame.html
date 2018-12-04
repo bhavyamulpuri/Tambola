@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Gamestart</title>
+<script type="text/javascript">
+function startTimer(duration, display) 
+{
+   var timer = duration, minutes, seconds;
+   setInterval(function () {
+       minutes = parseInt(timer / 60, 10)
+       seconds = parseInt(timer % 60, 10);
+
+       minutes = minutes < 10 ? "0" + minutes : minutes;
+       seconds = seconds < 10 ? "0" + seconds : seconds;
+
+       display.textContent = minutes + ":" + seconds;
+
+       if (--timer < 0) 
+       {
+           timer = duration;
+       }
+   }, 1000);
+}
+window.onload = function ()
+{
+   var thirtyMinutes = 60 * 30,
+       display = document.querySelector('.time');
+   startTimer(thirtyMinutes, display);
+};
+function myFunction() 
+{
+    var popup = document.getElementById("myPopup");
+    popup.classList.toggle("show");
+}
+</script>
+<style>
+.det
+{
+      color:black;
+	  width: 220px;
+	  background-color:orange;
+      padding:50px;      
+}
+body
+{
+   background-image:url("tb3.jpg");
+   background-repeat:no-repeat; 
+   background-size:1535px 800px;
+   align:center; 
+}
+.button 
+{
+  font-size: 1em;
+  padding: 10px;
+  color: #fff;
+  border: 2px solid #06D85F;
+  border-radius: 20px/50px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+.button:hover 
+{
+  background: #06D85F;
+}
+.overlay 
+{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.overlay:target
+{
+  visibility: visible;
+  opacity: 1;
+}
+.popup
+{
+  margin: 70px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 20%;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+.popup .close
+{
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}      
+</style>
+</head>
+<body>
+<form action="Startgame_servlet" method="post">
+<center>
+<div class="det">
+
+   <div>Registration closes in <span class="time">30:00</span> minutes!!!</div><br><br><br><br>  
+   <a class="button" href="#popup1">PLAY NOW</a>
+   <div id="popup1" class="overlay">
+     <div class="popup">
+        <h2>Tickets</h2>
+        <a class="close" href="#">&times;</a>    
+        <button type="submit" >Buy 1 ticket for 50 points</button>
+     </div>
+   </div>   
+ 
+</div>  
+</center>
+</form>
+</body>
+</html>
